@@ -95,12 +95,12 @@ Here digit is a integer between 0 and 9. Position (where the digit is placed) is
  character string, the first character denotes the row (A-I) and the second character denotes
 the column (1-9). The board must be a 2-dimensional character array of 9 x 9. */
 
-bool make_move(char position[2], int digit, char board[9][9]){
+bool make_move(char position[2], char digit, char board[9][9]){
 
   /* Check if a valid digit is entered. */
-  if (digit > 9 || digit < 0)
+  if (digit > '9' || digit < '0')
   {
-    cerr << "Error: This Sudoku puzzle only takes integers from 0 - 9." << endl;
+    cerr << endl << "(Error: This Sudoku puzzle only allows integers from 0 - 9.)" << endl;
     return false;
   }
 
@@ -110,17 +110,17 @@ bool make_move(char position[2], int digit, char board[9][9]){
     position[0] += ('A'-'a');
   if (position[0] > 'I' || position[0] < 'A')
   {
-    cerr << "Error: This Sudoku puzzle only has rows from A to I." << endl;
+    cerr << endl << "(Error: This Sudoku puzzle only has rows from A to I.)" << endl;
     return false;
   }
-  if (position[1] > '9' || position[0] < '0')
+  if (position[1] > '9' || position[1] < '0')
   {
-    cerr << "Error: This Sudoku puzzle only has columns from 0 to 1." << endl;
+    cerr << endl << "(Error: This Sudoku puzzle only has columns from 0 to 9.)" << endl;
     return false;
   }
 
   /*Place digit in position*/
 
-  board[static_cast<int>(position[0])-'A'][position[1]-1] = digit;
+  board[static_cast<int>(position[0])-'A'][position[1]-'1'] = digit;
   return true;
 }
