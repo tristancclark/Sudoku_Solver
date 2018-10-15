@@ -3,6 +3,7 @@
 #include <cstdio>
 #include <cstring>
 #include <cassert>
+#include <cctype>
 #include "sudoku.h"
 
 using namespace std;
@@ -69,3 +70,57 @@ void display_board(const char board[9][9]) {
 }
 
 /* add your functions here */
+
+/* Question 1 - boolean function that takes a 9 x 9 array of
+ characters representing a Sudoku board and returns true if
+ all the board positions are occupied by digits and false otherwise. */
+
+bool is_complete(char board[9][9]){
+
+  for (int i = 0; i < 9; i++)
+  {
+      for(int j = 0; j < 9; j++)
+      {
+	if(!isdigit(board[i][j]))
+	  return false;
+      }
+  }
+  return true;
+}
+
+/* End of is_complete function*/
+
+/* Question 2 - places a digit on a position on a Sudoku board.
+Here digit is a integer between 0 and 9. Position (where the digit is placed) is a two
+ character string, the first character denotes the row (A-I) and the second character denotes
+the column (1-9). The board must be a 2-dimensional character array of 9 x 9. */
+
+bool make_move(char position[2], int digit, char board[9][9]){
+
+  /* Check if a valid digit is entered. */
+  if (digit > 9 || digit < 0)
+  {
+    cerr << "Error: This Sudoku puzzle only takes integers from 0 - 9." << endl;
+    return false;
+  }
+
+  /*Check if a valid position is entered*/
+
+  if (islower(position[0]))
+    position[0] += ('A'-'a');
+  if (position[0] > 'I' || position[0] < 'A')
+  {
+    cerr << "Error: This Sudoku puzzle only has rows from A to I." << endl;
+    return false;
+  }
+  if (position[1] > '9' || position[0] < '0')
+  {
+    cerr << "Error: This Sudoku puzzle only has columns from 0 to 1." << endl;
+    return false;
+  }
+
+  /*Place digit in position*/
+
+  board[static_cast<int>(position[0])-'A'][position[1]-1] = digit;
+  return true;
+}
