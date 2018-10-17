@@ -38,13 +38,13 @@ int main() {
 
   // Should be OK
   cout << "Putting '1' into I8 is ";
-  if (!make_move("I8", '1', board)) 
+  if (!make_move("I8", '1', board))
     cout << "NOT ";
   cout << "a valid move. The board is:" << endl;
   display_board(board);
 
 	// write more tests
-
+/*
   cout << "=================== Question 3 ===================" << endl << endl;
 
   load_board("easy.dat", board);
@@ -60,7 +60,7 @@ int main() {
   if (solve_board(board)) {
     cout << "The 'easy' board has a solution:" << endl;
     display_board(board);
-  } else 
+  } else
     cout << "A solution cannot be found." << endl;
   cout << endl;
 
@@ -68,7 +68,7 @@ int main() {
   if (solve_board(board)) {
     cout << "The 'medium' board has a solution:" << endl;
     display_board(board);
-  } else 
+  } else
     cout << "A solution cannot be found." << endl;
   cout << endl;
 
@@ -77,6 +77,6 @@ int main() {
   cout << "=================== Question 5 ===================" << endl << endl;
 
 	// write more tests
-
+*/
   return 0;
 }

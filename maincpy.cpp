@@ -17,7 +17,7 @@ int main() {
   cout << endl << "Displaying Sudoku board with display_board():" << endl;
   display_board(board);
   cout << "Done!" << endl << endl;
-
+  /*Question1 checks
   cout << "=================== Question 1 ===================" << endl << endl;
 
   load_board("easy.dat", board);
@@ -32,43 +32,51 @@ int main() {
     cout << "NOT ";
   cout << "complete." << endl << endl;
 
+  */
+
+
+  //  Question 2 checks
+
   cout << "=================== Question 2 ===================" << endl << endl;
 
   load_board("easy.dat", board);
 
   // Should be OK
   cout << "Putting '1' into I8 is ";
-  if (!make_move("I8", '1', board)) 
+  if (!make_move("I8", '1', board))
     cout << "NOT ";
   cout << "a valid move. The board is:" << endl;
   display_board(board);
 
   // write more tests
   cout << "Putting '9' into A7 is ";
-  if (!make_move("A7", '9', board)) 
+  if (!make_move("A7", '9', board))
     cout << "NOT ";
   cout << "a valid move. The board is:" << endl;
   display_board(board);
 
   cout << "Putting 'b' into A7 is ";
-  if (!make_move("A7", 'b', board)) 
+  if (!make_move("A7", 'b', board))
     cout << "NOT ";
   cout << "a valid move. The board is:" << endl;
   display_board(board);
 
     cout << "Putting '1' into AA is ";
-  if (!make_move("AA", '9', board)) 
+  if (!make_move("AA", '9', board))
     cout << "NOT ";
   cout << "a valid move. The board is:" << endl;
   display_board(board);
 
     cout << "Putting '9' into Z7 is ";
-  if (!make_move("Z7", '9', board)) 
+  if (!make_move("Z7", '9', board))
     cout << "NOT ";
   cout << "a valid move. The board is:" << endl;
   display_board(board);
 
-  /*
+
+
+  /*Question 3 checks
+
   cout << "=================== Question 3 ===================" << endl << endl;
 
   load_board("easy.dat", board);
@@ -77,6 +85,7 @@ int main() {
   else
     cout << "Save board failed." << endl;
   cout << endl;
+
   */
 
   /*
@@ -86,7 +95,7 @@ int main() {
   if (solve_board(board)) {
     cout << "The 'easy' board has a solution:" << endl;
     display_board(board);
-  } else 
+  } else
     cout << "A solution cannot be found." << endl;
   cout << endl;
 
@@ -94,7 +103,7 @@ int main() {
   if (solve_board(board)) {
     cout << "The 'medium' board has a solution:" << endl;
     display_board(board);
-  } else 
+  } else
     cout << "A solution cannot be found." << endl;
   cout << endl;
 
