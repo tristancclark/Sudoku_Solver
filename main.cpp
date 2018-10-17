@@ -37,7 +37,7 @@ int main() {
   load_board("easy.dat", board);
 
   // Should be OK
-  cout << "Putting '1' into I8 is ";
+  cout << "Putting '1' into I8 is " << endl;
   if (!make_move("I8", '1', board))
     cout << "NOT ";
   cout << "a valid move. The board is:" << endl;
