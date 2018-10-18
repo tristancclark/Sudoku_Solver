@@ -124,13 +124,13 @@ int main() {
     cout << "A solution cannot be found." << endl;
   cout << endl;
 */
-  load_board("mystery3.dat", board);
-  if (use_all_tools(board)) {
-    cout << "The 'mystery3' board has a solution:" << endl;
+  load_board("mystery1.dat", board);
+  if (solve_board(board)) {
+    cout << "The 'mystery1' board has a solution:" << endl;
     display_board(board);
-  } else
+  } else {
     cout << "A solution cannot be found." << endl;
-    display_board(board);
+    display_board(board);}
   cout << endl;
 
 	// write more tests

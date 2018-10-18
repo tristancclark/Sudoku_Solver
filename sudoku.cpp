@@ -323,28 +323,57 @@ bool solve_board_simple(char board[9][9])
 
 bool solve_board(char board[9][9])
 {
+  //static int level = -1;
+//  level++;
+
+  //cout << "RECURSION LEVEL: " << level << endl;
   int row, column;
-  char starting_digit = '1', board_copy = [9][9];
+  char current_digit = '1', board_copy[9][9];
+  bool error = false;
 
-  if (use_all_tools(board))
-    return true;
+  make_board_copy(board, board_copy); //make a copy for this recursion
 
-  board_copy(board, board_copy); //copy board at each recursion to keep history
+  error = !use_all_tools(board_copy); //run all tools (autofill) and if error found report it
 
-  find_first_empty_box(row, column, board_copy);
-  first_valid_digit(row, column, starting_digit, board_copy);
-  board_copy[row][column] = starting_digit;
-  if (use_all_tools)  //here must find a way of returning false if count == 0 so no valid moves remain.
-  { 
-    solve_board(board_copy))
+  if (is_complete(board_copy))
+  {
+    make_board_copy(board_copy, board); //if complete copy board to original board_copy
+  //  cout << "COMPLETE!" << endl;
     return true;
   }
+  else if (error)
+  {
+  //  cout << "ERROR!" << endl;
+    return false;
+  }
+  else
+  {
+    find_first_empty_box(row, column, board_copy);
+    do
+    {
+      if (current_digit == '9')
+        return false;
+      first_valid_digit(row, column, current_digit, board_copy);
+      board_copy[row][column] = current_digit;
+      //cout << "DURING RECURSION: trying digit " << current_digit << " in position: row " << row << " and column " << column << endl;
+      //display_board(board_copy);
+    } while(!solve_board(board_copy));
+    make_board_copy(board_copy, board);
+    return true;
+  }
+  //try using all tools in a interation until no more spaces can be filled. Return false if the function
+  // reached a box where no digit was valid and true otherwise
+
+
+
 }
 
-bool block_duplicates_tool(char board[9][9])
+/*fills in suduko board using block duplicates theory. Only fills in boxes if digit
+definitely belongs there. Returns 0 if no changes have been made (at a dead end), returns 1
+if it has made changes and returns 2 if it has come across an error (no digit fits in a box)  */
+int block_duplicates_tool(char board[9][9])
 {
-  int count, flag_x, flag_y, row, column;
-  bool changes=false;
+  int count, flag_x, flag_y, row, column, changes = 0;
   for (char k = '1'; k <= '9'; k++) //for each row block
   {
     for (int i = 0; i < 3; i++) //for each column block
@@ -373,8 +402,12 @@ bool block_duplicates_tool(char board[9][9])
           {
             board[3 * i + flag_x][3 * j + flag_y] = k;
             cout << "Block_dup_tool: placing digit " << k << " in position: row " << 3 * i + flag_x << " and column " << 3 * j + flag_y << endl;
-            changes = true;
+            changes = 1;
           }
+          if (count == 0) //  if count == 0 then no possible moves are VALID in this box
+            {
+              return 5;
+            }
         }
       }
     }
@@ -382,10 +415,9 @@ bool block_duplicates_tool(char board[9][9])
   return changes;
 }
 
-bool column_duplicates_tool(char board[9][9])
+int column_duplicates_tool(char board[9][9])
 {
-  int count, row_flag;
-  bool changes = false;
+  int count, row_flag, changes = 0;
   for (char k = '1'; k <= '9'; k++) //for each character
   {
     for (int i = 0; i < 9; i++) //for each column
@@ -405,7 +437,11 @@ bool column_duplicates_tool(char board[9][9])
         {
           cout << "Column_dup_tool: placing digit " << k << " in position: row " << row_flag << " and column " << i << endl;
           board[row_flag][i] = k;
-          changes = true;
+          changes = 1;
+        }
+        if (count == 0)
+        {
+          return 5;
         }
       }
     }
@@ -413,10 +449,9 @@ bool column_duplicates_tool(char board[9][9])
   return changes;
 }
 
-bool row_duplicates_tool(char board[9][9])
+int row_duplicates_tool(char board[9][9])
 {
-  int count, column_flag;
-  bool changes = false;
+  int count, column_flag, changes = 0;
   for (char k = '1'; k <= '9'; k++) //for each character
   {
     for (int i = 0; i < 9; i++) //for each row
@@ -436,22 +471,27 @@ bool row_duplicates_tool(char board[9][9])
         {
           cout << "Row_dup_tool: placing digit " << k << " in position: row " << i << " and column " << column_flag << endl;
           board[i][column_flag] = k;
-          changes = true;
+          changes = 1;
         }
+        if (count == 0)
+          return 5;
       }
     }
   }
   return changes;
 }
 
+//try using all tools in a interation until no more spaces can be filled. Return false if the function
+// reached a box where no digit was valid and true otherwise
 bool use_all_tools(char board[9][9])
 {
   while(!is_complete(board))
   {
     if(!block_duplicates_tool(board) && !column_duplicates_tool(board) && !row_duplicates_tool(board))
+      return true;  // no changes more changes to be made by tools
+    if((block_duplicates_tool(board) + column_duplicates_tool(board) + row_duplicates_tool(board))>=5)
       return false;
   }
-  return true;
 }
 
 void find_first_empty_box(int &row, int &column, const char board[9][9])
@@ -491,7 +531,7 @@ void make_board_copy(const char board[9][9], char board_copy[9][9])
   {
     for (int j = 0; j < 9; j++) //for each column
     {
-      board[i][j] = board_copy[i][j];
+      board_copy[i][j] = board[i][j];
     }
   }
 }
