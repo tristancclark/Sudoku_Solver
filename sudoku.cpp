@@ -196,14 +196,17 @@ bool save_board(const char* filename, const char board[9][9])
   {
     for (int j = 0; j < 9; j++)
     {
-      if (!isdigit(board[i][j]) || board[i][j] == '.') //check for valid character
+      if (!isdigit(board[i][j]) && board[i][j] != '.') //check for valid character
+      {
+        cerr << "Contains an invalid character!" << endl;
         return false;
-
+      }
       out_stream << board[i][j]; //output character to file
 
       if (out_stream.fail()) //check for failure
       {
         out_stream.close();
+        cerr << "File error occured." << endl;
         return false;
       }
     }

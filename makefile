@@ -1,8 +1,8 @@
-sudoku: maincpy.o sudoku.o
-	g++ maincpy.o sudoku.o -o sudoku
-maincpy.o: maincpy.cpp sudoku.h
-	g++ -Wall -g -c maincpy.cpp
+sudoku: main.o sudoku.o
+	g++ main.o sudoku.o -o sudoku
+main.o: main.cpp sudoku.h
+	g++ -Wall -g -c main.cpp
 sudoku.o: sudoku.cpp sudoku.h
 	g++ -Wall -g -c sudoku.cpp
 clean:
-	rm -f *.o sudoku
+	rm -f *.o sudoku *copy.dat
