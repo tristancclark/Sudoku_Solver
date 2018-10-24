@@ -72,32 +72,28 @@ void display_board(const char board[9][9]) {
   print_frame(9);
 }
 
-/* add your functions here */
+/* Question 1 - Function that returns true if all the board positions
+are occupied by digits and false otherwise. */
 
-/* Question 1 - boolean function that takes a 9 x 9 array of
- characters representing a Sudoku board and returns true if
- all the board positions are occupied by digits and false otherwise. */
-
-bool is_complete(const char board[9][9]){
-
+bool is_complete(const char board[9][9])
+{
   for (int i = 0; i < 9; i++)
   {
-      for(int j = 0; j < 9; j++)
-      {
-	if(!isdigit(board[i][j]))
-	  return false;
-      }
+    for(int j = 0; j < 9; j++)
+    {
+      if(!isdigit(board[i][j]))
+        return false;
+    }
   }
   return true;
 }
 
-/* Question 2 - places a digit on a position on a Sudoku board.
-Here digit is a integer between 0 and 9. Position (where the digit is placed) is a two
- character string, the first character denotes the row (A-I) and the second character denotes
-the column (1-9). The board must be a 2-dimensional character array of 9 x 9. */
+/* Question 2 - Function that checks if a move is valid.
+Returns true if move is valid and implements the move.
+Returns false if the move, the position or the digit are invalid. */
 
-bool make_move(const char* position, char digit, char board[9][9]){
-
+bool make_move(const char* position, char digit, char board[9][9])
+{
   if (digit > '9' || digit < '0') //check for valid digit
   {
     cerr << endl << "(Error: This Sudoku puzzle only allows integers from 0 - 9.)" << endl;
@@ -130,10 +126,10 @@ bool make_move(const char* position, char digit, char board[9][9]){
   return false;
 }
 
-/*Function to check for a duplicate in the row that the position exists in.
-Returns true if no duplicate exists and false otherwise. */
+/*Helper function to check for the existance of a digit in a row.
+Returns true if no digit exists and false otherwise. */
 
-bool row_check(int row, int column, char digit, const char board[9][9])
+bool row_check(int row, char digit, const char board[9][9])
 {
   for (int i = 0; i < 9; i++)
   {
@@ -143,10 +139,10 @@ bool row_check(int row, int column, char digit, const char board[9][9])
   return true;
 }
 
-/*Function to check for a duplicate in the column that the position exists in.
-Returns true if no duplicate exists and false otherwise. */
+/*Helper function to check for the existance of a digit in a column.
+Returns true if no digit exists and false otherwise. */
 
-bool column_check(int row, int column, char digit, const char board[9][9])
+bool column_check(int column, char digit, const char board[9][9])
 {
   for (int i = 0; i < 9; i++)
   {
@@ -156,8 +152,9 @@ bool column_check(int row, int column, char digit, const char board[9][9])
   return true;
 }
 
-/*Function to check for a duplicate in the block that the position exists in.
-Returns true if no duplicate exists and false otherwise. */
+/*Helper function to check for the existance of a digit in the block that
+row and column intercept.
+Returns true if no digit exists and false otherwise. */
 
 bool block_check(int row, int column, char digit, const char board[9][9])
 {
@@ -175,16 +172,18 @@ bool block_check(int row, int column, char digit, const char board[9][9])
   return true;
 }
 
-/*Function to check for duplicates in row, column and block.
-Returns true if no duplicates in any and false otherwise.*/
+/*Helper function to check for the existance of a digit in a row, column and the
+block that row and column intercept.
+Returns true if no digit exists in any and false otherwise.*/
+
 bool all_checks(int row, int column, char digit, const char board[9][9])
 {
-  if (row_check(row, column, digit, board) && column_check(row, column, digit, board) && block_check(row, column, digit, board))
+  if (row_check(row, digit, board) && column_check(column, digit, board) && block_check(row, column, digit, board))
     return true;
   return false;
 }
 
-/*Question 3 - Takes a 9 x 9 character array and copy to a text file called filename.
+/*Question 3 - Function to copy a 9 x 9 character array to a text file called filename.
 Returns true if copy was successful.
 Returns false if a unexpected character was found or an error occured.*/
 
@@ -214,16 +213,12 @@ bool save_board(const char* filename, const char board[9][9])
   return true;
 }
 
-/*Question 4 - Takes a 9 x 9 partially completed sudoku board.
-If solving the board is possible then it returns true and the solved board.
-If solving the board is not possible then it returns false. */
+/*Question 4 - Function to solve a 9 x 9 partially completed sudoku board.
+Returns true and the solved board if solving the board is possible.
+Returns false if solving the board is not possible. */
 
 bool solve_board(char board[9][9])
 {
-  static int level = 0;
-  level++;
-  cout << "RECURSION LEVEL: " << level << endl;
-
   int row, column;
   char current_digit = '1';
 
@@ -234,7 +229,7 @@ bool solve_board(char board[9][9])
 
   do
   {
-    if (!first_valid_digit(row, column, current_digit, board)) //check if no valid digit fits
+    if (!find_first_valid_digit(row, column, current_digit, board)) //check if no valid digit fits
     {
       board[row][column] = '.';
       return false;
@@ -247,8 +242,9 @@ bool solve_board(char board[9][9])
   return true;
 }
 
-/*Function that scans each row from left to right searching for an empty box.
-Returning the position of first box found as the arguments row and column.*/
+/*Helper function that scans each row from left to right searching for an empty box.
+Returns the position of first box found as the arguments row and column.*/
+
 void find_first_empty_box(int &row, int &column, const char board[9][9])
 {
   for (int i = 0; i < 9; i++) //for each row
@@ -266,11 +262,12 @@ void find_first_empty_box(int &row, int &column, const char board[9][9])
   cout << "Sudoku board is already full, no empty boxes found!" << endl;
 }
 
-/*Function that finds the lowest possible 'potentially' valid digit and
+/*Helper function that finds the lowest possible 'potentially' valid digit and
 changes the argument current_digit to equal this.
-Function will return true if a valid digit was found.
-Function will return false if no valid digit was found. */
-bool first_valid_digit(int row, int column, char &current_digit, char board[9][9])
+Returns true if a valid digit was found.
+Returns false if no valid digit was found. */
+
+bool find_first_valid_digit(int row, int column, char &current_digit, char board[9][9])
 {
   for (; current_digit <= '9'; current_digit++)
   {

@@ -1,1 +1,36 @@
-Summarise your findings here (see specification).
+
+==================================FINDINGS==================================
+
+I originally approached this exercise by creating various logical tools that
+place a number if and only if that number definitely belongs there. By using
+these tools alongside recursion, the completion time and number of recursions
+can be decreased significantly. So that, in the case of Mystery 1 the puzzle
+is solved 45 times faster and in only 11 recursions.
+
+However, a weigh up between readability, complexity and efficiency was made
+and the simplistic recursion method was submitted.
+
+==================================QUESTION 5==================================
+
+mystery1.dat - 0.164 seconds to solve - extremely hard difficulty
+mystery2.dat - impossible to solve
+mystery3.dat - 0.00453 seconds to solve - hard difficulty
+
+==================================REASONING==================================
+
+What makes a sudoku hard for a human is different to what makes a sudoku hard
+for a computer.
+
+The function solve_board brute forces
+possible combinations until the correct one is found. Depending on how the algorithm
+tries digits decides on the time it takes to solve the puzzle, if it tries the
+right combination first time then that is just chance. What is not chance
+is how many clues the computer is given to start with as with each extra clue
+the number of possible combinations decreases by a factor of 9. mystery1.dat
+starts with 23 clues so is technically harder for a computer to brute force
+than mystery3.dat which starts with 24 clues.
+
+A human, unfortunately, does not have enough sheets of paper to try to solve
+a sudoku by brute force. Instead we must use logic. Modern sudoku puzzles are
+ranked according to the difficulty of the techniques required to generate
+a solution. 
