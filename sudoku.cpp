@@ -100,7 +100,7 @@ bool make_move(const char* position, char digit, char board[9][9])
     return false;
   }
 
-  if (strlen(position) > 2) //check for valid position length
+  if (strlen(position) != 2) //check for valid position length
   {
     cerr << endl << "(Error: This Sudoku puzzle is 9 x 9, please enter a two digit position.)" << endl;
     return false;
