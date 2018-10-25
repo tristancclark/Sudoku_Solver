@@ -12,6 +12,6 @@ bool block_check(int row, int column, char digit, const char board[9][9]);
 bool all_checks(int row, int column, char digit, const char board[9][9]);
 bool solve_board(char board[9][9]);
 void find_first_empty_box(int &row, int &column, const char board[9][9]);
-bool find_first_valid_digit(int row, int column, char &current_digit, char board[9][9]);
+bool find_next_valid_digit(int row, int column, char &current_digit, char board[9][9]);
 
 #endif

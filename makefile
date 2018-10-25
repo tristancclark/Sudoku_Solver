@@ -1,8 +1,15 @@
-sudoku: main.o sudoku.o
-	g++ main.o sudoku.o -o sudoku
-main.o: main.cpp sudoku.h
-	g++ -Wall -g -c main.cpp
-sudoku.o: sudoku.cpp sudoku.h
-	g++ -Wall -g -c sudoku.cpp
+OBJ = sudoku.o	main.o
+EXE = sudoku
+CXX = g++
+CXXFLAGS = -Wall	-g	-MMD
+
+$(EXE): $(OBJ)
+	$(CXX) $^ -o $@
+
+%.o: %.cpp
+	$(CXX) $(CXXFLAGS) -c $^
+
+-include $(OBJ:.o=.d)
+
 clean:
-	rm -f *.o sudoku *copy.dat
+	rm -f *.o *copy.dat *.d

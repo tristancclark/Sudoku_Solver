@@ -102,7 +102,7 @@ bool make_move(const char* position, char digit, char board[9][9])
 
   if (strlen(position) > 2) //check for valid position length
   {
-    cerr << endl << "(Error: This Sudoku puzzle is 2-D, please enter a two digit position.)" << endl;
+    cerr << endl << "(Error: This Sudoku puzzle is 9 x 9, please enter a two digit position.)" << endl;
     return false;
   }
 
@@ -191,14 +191,18 @@ bool save_board(const char* filename, const char board[9][9])
 {
   ofstream  out_stream;
   out_stream.open(filename);
-
+  if (out_stream.fail()) //check for failure
+  {
+    cerr << "Error opening file.";
+  }
   for (int i = 0; i < 9; i++)
   {
     for (int j = 0; j < 9; j++)
     {
       if (!isdigit(board[i][j]) && board[i][j] != '.') //check for valid character
       {
-        cerr << "Contains an invalid character!" << endl;
+        out_stream.close();
+        cerr << "Invalid character found." << endl;
         return false;
       }
       out_stream << board[i][j]; //output character to file
@@ -206,7 +210,7 @@ bool save_board(const char* filename, const char board[9][9])
       if (out_stream.fail()) //check for failure
       {
         out_stream.close();
-        cerr << "File error occured." << endl;
+        cerr << "Error outputing character." << endl;
         return false;
       }
     }
@@ -232,13 +236,13 @@ bool solve_board(char board[9][9])
 
   do
   {
-    if (!find_first_valid_digit(row, column, current_digit, board)) //check if no valid digit fits
+    if (!find_next_valid_digit(row, column, current_digit, board)) //check for the next valid digit, and return as current_digit
     {
-      board[row][column] = '.';
+      board[row][column] = '.'; //reset box to empty if no valid digit exists
       return false;
     }
 
-    board[row][column] = current_digit;
+    board[row][column] = current_digit; //try current_digit
 
   } while(!solve_board(board));
 
@@ -250,9 +254,9 @@ Returns the position of first box found as the arguments row and column.*/
 
 void find_first_empty_box(int &row, int &column, const char board[9][9])
 {
-  for (int i = 0; i < 9; i++) //for each row
+  for (int i = 0; i < 9; i++)
   {
-    for (int j = 0; j < 9; j++) //for each column
+    for (int j = 0; j < 9; j++)
     {
       if (board[i][j] == '.')
       {
@@ -265,16 +269,16 @@ void find_first_empty_box(int &row, int &column, const char board[9][9])
   cout << "Sudoku board is already full, no empty boxes found!" << endl;
 }
 
-/*Helper function that finds the lowest possible 'potentially' valid digit and
-changes the argument current_digit to equal this.
+/*Helper function that finds the next possible 'potentially' valid digit greater
+than or equal to current_digit and updates the argument current_digit to equal this.
 Returns true if a valid digit was found.
 Returns false if no valid digit was found. */
 
-bool find_first_valid_digit(int row, int column, char &current_digit, char board[9][9])
+bool find_next_valid_digit(int row, int column, char &current_digit, char board[9][9])
 {
   for (; current_digit <= '9'; current_digit++)
   {
-    if (all_checks(row, column, current_digit, board))
+    if (all_checks(row, column, current_digit, board)) //check for validity
     {
       return true;
     }

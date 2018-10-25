@@ -1,4 +1,42 @@
 
+==================================QUESTION 5==================================
+
+mystery1.dat - 0.164 seconds (average) - 421547 iterations
+mystery2.dat - impossible to solve
+mystery3.dat - 0.00453 seconds (average) - 14134 iterations
+
+==================================REASONING==================================
+
+In order to identify the 'hardness' of each puzzle we first must explore the
+definition of hardness in this context. One definition may state that hardness is
+proportional to the time taken to solve the puzzle. Another definition may state
+that hardness is calculated from the difficulty of the techniques required to
+generate a solution. Further to this, what makes a sudoku 'hard' for a human is
+different to what makes a sudoku 'hard' for a computer.
+
+A computer is only as clever as its programmer so that different types of
+solver programs may struggle with different puzzles. The function solve_board
+brute forces possible combinations until a correct one is found so that the
+longer the solver takes to find a solution then the more combinations it has been
+forced to try and the harder it has found it. However, depending on how the
+algorithm 'tries' digits will greatly change the time taken to find the correct
+combination. Therefore, the time taken for this particular solver to brute force a
+sudoku is not neccessarily reflective of its hardness for all brute force solvers.
+A human, unfortunately, does not have enough time or sheets of paper to solve
+a sudoku by brute force and so this method of measuring hardness is also inappropriate
+for us.
+
+It is interesting that mystery1.dat starts with one less clue than mystery3.dat
+and is, therefore, more likely to be harder for a computer to brute force as
+there are 9 times more possible combinations. However, this is unlikely to be
+the sole reason that mystery1.dat is solved faster and so is not greatly significant.
+
+To summarise, it would be correct to say that the mystery1.dat puzzle is harder
+than the mystery3.dat puzzle for this particular solve_board function to solve
+but it would be inaccurate to say that it is harder for all solving methods.
+The question must be extended to include who the level of hardness is specific
+to and how exactly it should be measured.
+
 ==================================COMMENTS==================================
 
 I originally approached this exercise by creating various logical tools that
@@ -10,37 +48,3 @@ instead of 421,547.
 
 However, a weigh up between readability, complexity and efficiency was made
 and the simplistic recursion method was submitted.
-
-==================================QUESTION 5==================================
-
-mystery1.dat - 0.164 seconds (average) - 421547 iterations
-mystery2.dat - impossible to solve
-mystery3.dat - 0.00453 seconds (average) - 14134 iterations
-
-==================================REASONING==================================
-
-In order to identify the 'hardness' of each puzzle we first must explore the
-definition of hardness in this context. One definition could be that hardness is
-proportional to the time taken to solve the puzzle. Another definition may state
-that hardness is calculated from the difficulty of the techniques required to
-generate a solution. Furthermore, what makes a sudoku 'hard' for a human is
-different to what makes a sudoku 'hard' for a computer.
-
-A computer is only as clever as its programmer so that different
-programs may struggle with different puzzles. The function solve_board
-brute forces possible combinations until a correct one is found.
-Depending on how the algorithm tries digits decides the time it takes to
-solve the puzzle. Therefore, the time taken to for this solver to brute force a
-sudoku is not  neccessarily reflective of its 'hardness' for all brute force solvers.
-A human, unfortunately, does not have enough time or sheets of paper to solve
-a sudoku by brute force and so this method of measuring hardness is certainly
-inaccurate for humans.
-
-It is interesting that mystery1.dat starts with one less clue than mystery3.dat
-and is, therefore, more likely to be 'harder' for a computer to brute force as
-there are 9 times more possible combinations. However, this is unlikely to be
-the sole reason that mystery1.dat is solved fastest. It is correct to say that
-the mystery1.dat puzzle is harder than the mystery3.dat puzzle for this specific
-solve_board function to solve but is inaccurate to say it is harder for all
-solving methods. The question must be extended to include who the level of
-hardness is specific to and how exactly it is measured.
